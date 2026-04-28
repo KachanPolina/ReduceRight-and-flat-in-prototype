@@ -17,26 +17,28 @@ function MyArrayProto() {
 		}
 		return this.length;
 	};
+
 	this.reduceRight = function (callback, startValue) {
 		let result;
-        if(this.length === 0) return NaN;
+		let i;
+		if (this.length === 0 && startValue === undefined) {
+			throw new TypeError('Empty array and StartValue === undefined');
+		}
 		if (startValue !== undefined) {
 			result = startValue;
-			for (let i = this.length - 1; i >= 0; i--) {
-				result = callback(result, this[i], i, this);
-			}
-			return result;
+			i = this.length - 1;
 		}
 		if (startValue === undefined) {
 			result = this[this.length - 1];
-			for (let i = this.length - 2; i >= 0; i--) {
-				result = callback(result, this[i], i, this);
-			}
-			return result;
+			i = this.length - 2;
 		}
+		for (; i >= 0; i--) {
+			result = callback(result, this[i], i, this);
+		}
+		return result;
 	};
 }
 
-const myArr = new MyArray(1, 2, 3, 10);
-const result = myArr.reduceRight((a, b) => a - b, 0)
+const myArr = new MyArray();
+const result = myArr.reduceRight((a, b) => a - b, 10);
 console.log(result);
